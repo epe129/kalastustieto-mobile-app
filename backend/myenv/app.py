@@ -60,7 +60,7 @@ def viehella():
     cursor = mysql.connection.cursor()
     viehella_data = []
     for x in lajit:
-        cursor.execute(f"SELECT COUNT(laji) AS maara, laji, viehe FROM viehe, tarppi, kala, laji WHERE viehe.id=tarppi.viehe_id AND tarppi.id=kala.tarppi_id AND kala.laji_id=laji.id AND laji='{x}' GROUP BY viehe;")
+        cursor.execute(f"SELECT viehe, COUNT(laji) AS maara, laji FROM viehe, tarppi, kala, laji WHERE viehe.id=tarppi.viehe_id AND tarppi.id=kala.tarppi_id AND kala.laji_id=laji.id AND laji='{x}' GROUP BY viehe;")
         viehella = cursor.fetchall()
         if len(viehella) > 0: 
             viehella_data.append(viehella)

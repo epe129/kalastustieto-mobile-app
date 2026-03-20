@@ -1,16 +1,8 @@
-// import { Image } from 'expo-image';
-// import { Platform, StyleSheet } from 'react-native';
-
-// import { HelloWave } from '@/components/hello-wave';
-// import ParallaxScrollView from '@/components/parallax-scroll-view';
-// import { ThemedText } from '@/components/themed-text';
-// import { ThemedView } from '@/components/themed-view';
-// import { Link } from 'expo-router';
-// import { View } from 'react-native-reanimated/lib/typescript/Animated';
-// import { Text } from 'react-native';
-
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, ScrollView, TextInput, StyleSheet, FlatList} from 'react-native';
+import {View, Text, Image, ScrollView, TextInput, StyleSheet, FlatList, ImageBackground} from 'react-native';
+import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
+
+const image = require('../../assets/images/kuva.png');
 
 export default function HomeScreen() {
   const [paino_mukaan, setPainot_mukaan] = useState();
@@ -59,52 +51,65 @@ export default function HomeScreen() {
   useEffect(() => {
     getData();
   }, []);
-  console.log(paino_mukaan);
+
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.text}>Kalastustieto mobile app</Text>
-      <View style={{ borderBottomColor: 'black', marginTop: 20, borderBottomWidth: StyleSheet.hairlineWidth }}/>
-      <View style={{marginTop: 20}}>
-        <Text style={styles.Titletext}>Kalat painon mukaan:</Text>
-        <Text style={styles.Thetext}>{paino_mukaan}</Text>
-      </View>
-      <View style={{ borderBottomColor: 'black', marginTop: 20, borderBottomWidth: StyleSheet.hairlineWidth }}/>
-      <View style={{marginTop: 20}}>
-        <Text style={styles.Titletext}>Kalat pituuden mukaan:</Text>
-        <Text style={styles.Thetext}>{pituus_mukaan}</Text>
-      </View>
-      <View style={{ borderBottomColor: 'black', marginTop: 20, borderBottomWidth: StyleSheet.hairlineWidth }}/>
-      <View style={{marginTop: 20}}>
-        <Text style={styles.Titletext}>Kalalajien saanti määrät:</Text>
-        <Text style={styles.Thetext}>{maara_mukaan}</Text>
-      </View>
-      <View style={{ borderBottomColor: 'black', marginTop: 20, borderBottomWidth: StyleSheet.hairlineWidth }}/>
-      <View style={{marginTop: 20}}>
-        <Text style={styles.Titletext}>Kalalajien saanti määrät eri vieheillä:</Text>
-        <Text style={styles.Thetext}>{viehella_mukaan}</Text>
-      </View>
-    </ScrollView>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container} edges={['left', 'right']}>
+        <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+          <Text style={styles.text}>Kalastustieto mobile app</Text>
+          {/* <View style={{ borderBottomColor: 'black', marginTop: 20, borderBottomWidth: StyleSheet.hairlineWidth }}/> */}
+          <View style={{marginTop: 20, backgroundColor: '#000000c0' }}>
+            <Text style={styles.Titletext}>Kalat painon mukaan:</Text>
+            <Text style={styles.Thetext}>{paino_mukaan}</Text>
+          </View>
+          {/* <View style={{ borderBottomColor: 'black', marginTop: 20, borderBottomWidth: StyleSheet.hairlineWidth }}/> */}
+          <View style={{marginTop: 20, backgroundColor: '#000000c0'}}>
+            <Text style={styles.Titletext}>Kalat pituuden mukaan:</Text>
+            <Text style={styles.Thetext}>{pituus_mukaan}</Text>
+          </View>
+          {/* <View style={{ borderBottomColor: 'black', marginTop: 20, borderBottomWidth: StyleSheet.hairlineWidth }}/> */}
+          <View style={{marginTop: 20, backgroundColor: '#000000c0'}}>
+            <Text style={styles.Titletext}>Kalalajien saanti määrät:</Text>
+            <Text style={styles.Thetext}>{maara_mukaan}</Text>
+          </View>
+          {/* <View style={{ borderBottomColor: 'black', marginTop: 20, borderBottomWidth: StyleSheet.hairlineWidth }}/> */}
+          <View style={{marginTop: 20, backgroundColor: '#000000c0'}}>
+            <Text style={styles.Titletext}>Kalalajien saanti määrät eri vieheillä:</Text>
+            <Text style={styles.Thetext}>{viehella_mukaan}</Text>
+          </View>
+        </ImageBackground>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 50,
+    flex: 1
   }, 
+  image: {
+    flex: 1,
+    justifyContent: 'center',
+  },
   text: {
     fontSize: 24,
     fontWeight: 'bold',
     paddingLeft: 20,
     paddingBottom: 10,
+    color: 'white', 
+    backgroundColor: '#000000c0'
   },
   Titletext: {
     fontSize: 24,
     fontWeight: 'bold',
     paddingLeft: 20,
     paddingBottom: 20,
+    color: 'white'
   },
   Thetext: {
     fontSize: 24,
     paddingLeft: 22,
-  }
+    color: 'white'
+  },
+
 });

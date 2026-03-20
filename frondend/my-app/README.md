@@ -1,1 +1,0 @@
-# kalastustieto-mobile-app

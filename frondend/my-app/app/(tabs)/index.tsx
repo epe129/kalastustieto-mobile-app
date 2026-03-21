@@ -9,6 +9,11 @@ export default function HomeScreen() {
   const [pituus_mukaan, setPituus_mukaan] = useState();
   const [maara_mukaan, setMaara_mukaan] = useState();
   const [viehella_mukaan, setViehella_mukaan] = useState();
+  
+  const [visible_paino, setVisible_paino] = useState(false); 
+  const [visible_pituus, setVisible_pituus] = useState(false); 
+  const [visible_maara, setVisible_maara] = useState(false); 
+  const [visible_viehella, setVisible_viehella] = useState(false); 
 
   const getData = async () => {
     fetch('http://10.0.2.2:5000/paino')
@@ -48,8 +53,54 @@ export default function HomeScreen() {
       });
   };
   
+  const startSlideshow = () => {
+    setTimeout(() => {
+      setVisible_paino(true)
+
+      setVisible_viehella(false)
+      setVisible_pituus(false)
+      setVisible_maara(false)
+    }, 0);
+
+    setTimeout(() => {
+      setVisible_pituus(true)
+      
+      setVisible_viehella(false)
+      setVisible_paino(false)
+      setVisible_maara(false)
+    }, 5000);
+
+    setTimeout(() => {
+      setVisible_maara(true)
+
+      setVisible_viehella(false)
+      setVisible_paino(false)
+      setVisible_pituus(false)
+    }, 10000);
+
+    setTimeout(() => {
+      setVisible_viehella(true)
+
+      setVisible_paino(false)
+      setVisible_pituus(false)
+      setVisible_maara(false)
+    }, 15000);
+
+    
+    setTimeout(() => {
+      setVisible_viehella(false)
+      setVisible_paino(false)
+      setVisible_pituus(false)
+      setVisible_maara(false)
+      startSlideshow();
+    }, 20000);
+
+  };
+
+
   useEffect(() => {
     getData();
+    startSlideshow();
   }, []);
 
   return (
@@ -57,25 +108,11 @@ export default function HomeScreen() {
       <SafeAreaView style={styles.container} edges={['left', 'right']}>
         <ImageBackground source={image} resizeMode="cover" style={styles.image}>
           <Text style={styles.text}>Kalastustieto mobile app</Text>
-          {/* <View style={{ borderBottomColor: 'black', marginTop: 20, borderBottomWidth: StyleSheet.hairlineWidth }}/> */}
           <View style={{marginTop: 20, backgroundColor: '#000000c0' }}>
-            <Text style={styles.Titletext}>Kalat painon mukaan:</Text>
-            <Text style={styles.Thetext}>{paino_mukaan}</Text>
-          </View>
-          {/* <View style={{ borderBottomColor: 'black', marginTop: 20, borderBottomWidth: StyleSheet.hairlineWidth }}/> */}
-          <View style={{marginTop: 20, backgroundColor: '#000000c0'}}>
-            <Text style={styles.Titletext}>Kalat pituuden mukaan:</Text>
-            <Text style={styles.Thetext}>{pituus_mukaan}</Text>
-          </View>
-          {/* <View style={{ borderBottomColor: 'black', marginTop: 20, borderBottomWidth: StyleSheet.hairlineWidth }}/> */}
-          <View style={{marginTop: 20, backgroundColor: '#000000c0'}}>
-            <Text style={styles.Titletext}>Kalalajien saanti määrät:</Text>
-            <Text style={styles.Thetext}>{maara_mukaan}</Text>
-          </View>
-          {/* <View style={{ borderBottomColor: 'black', marginTop: 20, borderBottomWidth: StyleSheet.hairlineWidth }}/> */}
-          <View style={{marginTop: 20, backgroundColor: '#000000c0'}}>
-            <Text style={styles.Titletext}>Kalalajien saanti määrät eri vieheillä:</Text>
-            <Text style={styles.Thetext}>{viehella_mukaan}</Text>
+            {visible_paino ? <Text style={styles.Titletext}>Kalat painon mukaan: {"\n" + paino_mukaan}</Text>  : null}
+            {visible_pituus ? <Text style={styles.Titletext}>Kalat pituuden mukaan: {"\n" + pituus_mukaan}</Text>  : null}
+            {visible_maara ? <Text style={styles.Titletext}>Kalalajien saanti määrät: {"\n" + maara_mukaan}</Text>  : null}
+            {visible_viehella ? <Text style={styles.Titletext}>Kalalajien saanti määrät eri vieheillä: {"\n" + viehella_mukaan}</Text>  : null}
           </View>
         </ImageBackground>
       </SafeAreaView>

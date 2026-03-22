@@ -25,6 +25,7 @@ def paino():
     cursor.execute('SELECT laji, paino FROM kala, laji WHERE kala.laji_id=laji.id ORDER BY paino DESC')
     paino_data = cursor.fetchall()
     print(paino_data)
+    paino_data = [f"{laji} {paino} kg" for laji, paino in paino_data]
     return {"data": paino_data}
 
 
@@ -34,6 +35,7 @@ def pituus():
     cursor.execute('SELECT laji, pituus FROM kala, laji WHERE kala.laji_id=laji.id ORDER BY pituus DESC')
     pituus = cursor.fetchall()
     print(pituus)
+    pituus = [f"{laji} {pituus} cm" for laji, pituus in pituus]
     return {"data": pituus}
 
 @app.route('/maara')
@@ -42,6 +44,7 @@ def maara():
     cursor.execute('SELECT laji, COUNT(laji) as maara FROM laji GROUP BY laji ORDER BY maara DESC')
     maara = cursor.fetchall()
     print(maara)
+    maara = [f"{laji} {maara} kpl" for laji, maara in maara]
     return {"data": maara}
 
 @app.route('/viehella')
@@ -67,7 +70,9 @@ def viehella():
         viehella = cursor.fetchall()
         if len(viehella) > 0: 
             viehella_data.append(viehella)
-            
+    
+    viehella_data = [f"{laji} {viehe} {maara} kpl" for viehella in viehella_data for laji, maara, viehe in viehella]
+    
     return {"data": viehella_data}
 
 if __name__ == '__main__':

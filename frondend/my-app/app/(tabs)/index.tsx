@@ -107,12 +107,14 @@ export default function HomeScreen() {
     <SafeAreaProvider>
       <SafeAreaView style={styles.container} edges={['left', 'right']}>
         <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-          <Text style={styles.text}>Kalastustieto mobile app</Text>
-          <View style={{marginTop: 20, backgroundColor: '#000000c0' }}>
-            {visible_paino ? <Text style={styles.Titletext}>Kalat painon mukaan: {"\n" + paino_mukaan}</Text>  : null}
-            {visible_pituus ? <Text style={styles.Titletext}>Kalat pituuden mukaan: {"\n" + pituus_mukaan}</Text>  : null}
-            {visible_maara ? <Text style={styles.Titletext}>Kalalajien saanti määrät: {"\n" + maara_mukaan}</Text>  : null}
-            {visible_viehella ? <Text style={styles.Titletext}>Kalalajien saanti määrät eri vieheillä: {"\n" + viehella_mukaan}</Text>  : null}
+          <View style={styles.main}>
+            <Text style={styles.text}>Kalastustieto mobile app</Text>
+            <View style={{marginTop: 50, backgroundColor: '#000000c0' }}>
+              {visible_paino ? <Text style={styles.Titletext}>Kalat painon mukaan: {"\n" + paino_mukaan}</Text>  : null}
+              {visible_pituus ? <Text style={styles.Titletext}>Kalat pituuden mukaan: {"\n" + pituus_mukaan}</Text>  : null}
+              {visible_maara ? <Text style={styles.Titletext}>Kalalajien saanti määrät: {"\n" + maara_mukaan}</Text>  : null}
+              {visible_viehella ? <Text style={styles.Titletext}>Kalalajien saanti määrät eri vieheillä: {"\n" + viehella_mukaan}</Text>  : null}
+            </View>
           </View>
         </ImageBackground>
       </SafeAreaView>
@@ -122,8 +124,12 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   }, 
+  main: {
+    marginTop: 0,
+    marginBottom: 200,
+  },
   image: {
     flex: 1,
     justifyContent: 'center',
@@ -148,5 +154,4 @@ const styles = StyleSheet.create({
     paddingLeft: 22,
     color: 'white'
   },
-
 });

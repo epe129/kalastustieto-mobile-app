@@ -4,6 +4,10 @@
 import sys
 import ctypes
 import win32serviceutil
+import subprocess
+
+# opens XAMPP control panel 
+subprocess.Popen(['C:/xampp/xampp-control.exe'])
 
 def is_admin():
     try:

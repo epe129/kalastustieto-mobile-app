@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, Image, ScrollView, TextInput, StyleSheet, FlatList, ImageBackground} from 'react-native';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
 
-const image = require('../../assets/images/kuva.png');
+const image = require('../../assets/images/tausta.jpg');
 
 export default function HomeScreen() {
   const [paino_mukaan, setPainot_mukaan] = useState();

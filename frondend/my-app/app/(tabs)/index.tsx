@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, ScrollView, TextInput, StyleSheet, FlatList, ImageBackground} from 'react-native';
+import {View, Text, ScrollView, TextInput, StyleSheet, FlatList, ImageBackground} from 'react-native';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
+import { Image } from 'expo-image';
 
 const image = require('../../assets/images/tausta.jpg');
 
 export default function HomeScreen() {
-  const [paino_mukaan, setPainot_mukaan] = useState();
-  const [pituus_mukaan, setPituus_mukaan] = useState();
-  const [maara_mukaan, setMaara_mukaan] = useState();
-  const [viehella_mukaan, setViehella_mukaan] = useState();
+  const [paino_mukaan, setPainot_mukaan] = useState<string[]>([]);
+  const [pituus_mukaan, setPituus_mukaan] = useState<string[]>([]);
+  const [maara_mukaan, setMaara_mukaan] = useState<string[]>([]);
+  const [viehella_mukaan, setViehella_mukaan] = useState<string[]>([]);
   
   const [visible_paino, setVisible_paino] = useState(false); 
   const [visible_pituus, setVisible_pituus] = useState(false); 
@@ -19,7 +20,7 @@ export default function HomeScreen() {
     fetch('http://10.0.2.2:5000/paino')
       .then(response => response.json())
       .then(json => {
-        setPainot_mukaan(json.data.join('\n').replace(/,/g, ', '));
+        setPainot_mukaan(Array.isArray(json.data) ? json.data : []);
       })
       .catch(error => {
         console.error(error);
@@ -28,7 +29,7 @@ export default function HomeScreen() {
     fetch('http://10.0.2.2:5000/pituus')
       .then(response => response.json())
       .then(json => {
-        setPituus_mukaan(json.data.join('\n').replace(/,/g, ', '));
+        setPituus_mukaan(Array.isArray(json.data) ? json.data : []);
       })
       .catch(error => {
         console.error(error);
@@ -37,7 +38,7 @@ export default function HomeScreen() {
     fetch('http://10.0.2.2:5000/maara')
       .then(response => response.json())
       .then(json => {
-        setMaara_mukaan(json.data.join('\n').replace(/,/g, ', '));
+        setMaara_mukaan(Array.isArray(json.data) ? json.data : []);
       })
       .catch(error => {
         console.error(error);
@@ -46,7 +47,7 @@ export default function HomeScreen() {
     fetch('http://10.0.2.2:5000/viehella')
       .then(response => response.json())
       .then(json => {
-        setViehella_mukaan(json.data.join('\n').replace(/,/g, ' '));
+        setViehella_mukaan(Array.isArray(json.data) ? json.data : []);
       })
       .catch(error => {
         console.error(error);
@@ -102,7 +103,16 @@ export default function HomeScreen() {
     getData();
     startSlideshow();
   }, []);
+  
+  console.log(paino_mukaan[0]);
 
+  const fishImages: {[key: string]: any} = {
+    hauki: require('../../assets/images/hauki.jpg'),
+    // ahven: require('../../assets/images/ahven.jpg'),
+    siika: require('../../assets/images/siika.jpg'),
+    // add all your fish here
+  };
+  
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container} edges={['left', 'right']}>
@@ -110,10 +120,41 @@ export default function HomeScreen() {
           <View style={styles.main}>
             <Text style={styles.text}>Kalastustieto mobile app</Text>
             <View style={{marginTop: 50, backgroundColor: '#000000c0' }}>
-              {visible_paino ? <Text style={styles.Titletext}>Kalat painon mukaan: {"\n" + paino_mukaan}</Text>  : null}
-              {visible_pituus ? <Text style={styles.Titletext}>Kalat pituuden mukaan: {"\n" + pituus_mukaan}</Text>  : null}
-              {visible_maara ? <Text style={styles.Titletext}>Kalalajien saanti määrät: {"\n" + maara_mukaan}</Text>  : null}
-              {visible_viehella ? <Text style={styles.Titletext}>Kalalajien saanti määrät eri vieheillä: {"\n" + viehella_mukaan}</Text>  : null}
+              {visible_paino ? <View><Text style={styles.Titletext}>Kalat painon mukaan: {"\n" + paino_mukaan.map((item: string) => item).join('\n')}</Text>
+                {paino_mukaan.length > 0 && fishImages[paino_mukaan[0][0] ] ? (
+                  <Image source={fishImages[paino_mukaan[0][0]]} style={styles.imageFish} />
+                ) : (
+                  <Text style={styles.text}>Kuva ei näy</Text>
+                )} 
+              
+              </View>  : null}
+              
+              {visible_pituus ? <View><Text style={styles.Titletext}>Kalat pituuden mukaan: {"\n" + pituus_mukaan.map((item: string) => item).join('\n')}</Text>
+                  {paino_mukaan.length > 0 && fishImages[paino_mukaan[0][0] ] ? (
+                    <Image source={fishImages[paino_mukaan[0][0]]} style={styles.imageFish} />
+                  ) : (
+                    <Text style={styles.text}>Kuva ei näy</Text>
+                  )}
+              
+              </View>  : null}
+              
+              {visible_maara ? <View><Text style={styles.Titletext}>Kalalajien saanti määrät: {"\n" + maara_mukaan.map((item: string) => item).join('\n')}</Text>
+                          {maara_mukaan.length > 0 && fishImages[maara_mukaan[0][0]] ? (
+                <Image source={fishImages[maara_mukaan[0][0]]} style={styles.imageFish} />
+              ) : (
+                <Text style={styles.text}>Kuva ei näy</Text>
+              )} 
+              
+              </View>  : null}
+              
+              {visible_viehella ? <View><Text style={styles.Titletext}>Kalalajien saanti määrät eri vieheillä: {"\n" + viehella_mukaan.map((item: string) => item).join('\n')}</Text>
+                          {viehella_mukaan.length > 0 && fishImages[viehella_mukaan[0][0]] ? (
+                <Image source={fishImages[viehella_mukaan[0][0]]} style={styles.imageFish} />
+              ) : (
+                <Text style={styles.text}>Kuva ei näy</Text>
+              )} 
+              
+              </View>  : null}
             </View>
           </View>
         </ImageBackground>
@@ -133,6 +174,12 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     justifyContent: 'center',
+  },
+  imageFish: {
+    borderRadius: 10,
+    marginLeft: 20,
+    width: 150,
+    height: 40, 
   },
   text: {
     fontSize: 24,

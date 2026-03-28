@@ -21,35 +21,45 @@ def index():
 
 @app.route('/paino')
 def paino():
+    k = []
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT laji, paino FROM kala, laji WHERE kala.laji_id=laji.id ORDER BY paino DESC')
-    paino_data = cursor.fetchall()
-    print(paino_data)
-    paino_data = [f"{laji} {paino} kg" for laji, paino in paino_data]
-    return {"data": paino_data}
+    paino_data = cursor.fetchall()    
+    for laji, paino in paino_data:
+        k.append((f"{laji}", f"{paino} kg"))
+    return {"data": k}
 
 
 @app.route('/pituus')
 def pituus():
+    k = []
+    
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT laji, pituus FROM kala, laji WHERE kala.laji_id=laji.id ORDER BY pituus DESC')
     pituus = cursor.fetchall()
-    print(pituus)
-    pituus = [f"{laji} {pituus} cm" for laji, pituus in pituus]
-    return {"data": pituus}
+
+    for laji, pituus in pituus:
+        k.append((f"{laji}", f"{pituus} cm"))
+
+    return {"data": k}
 
 @app.route('/maara')
 def maara():
+    k = []
+    
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT laji, COUNT(laji) as maara FROM laji GROUP BY laji ORDER BY maara DESC')
     maara = cursor.fetchall()
-    print(maara)
-    maara = [f"{laji} {maara} kpl" for laji, maara in maara]
-    return {"data": maara}
+    
+    for laji, maara in maara:
+        k.append((f"{laji}", f"{maara} kpl"))
+
+    return {"data": k}
 
 @app.route('/viehella')
 def viehella():    
     lajit = ["ahven", "harjus", "hauki", "jokirapu", "kiiski", "kirjolohi", "kolmipiikki", "kuha", "kuore", "lahna", "lohi", "made", "muikku", "pasuri", "rautu", "ruutana", "salakka", "särki", "säyne", "siika", "silakka", "sorva", "suutari", "taimen", "täplärapu"]
+    k = []
     
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT laji, COUNT(laji) as maara FROM laji GROUP BY laji ORDER BY maara DESC")
@@ -66,14 +76,15 @@ def viehella():
     cursor = mysql.connection.cursor()
     viehella_data = []
     for x in lajit:
-        cursor.execute(f"SELECT viehe, COUNT(laji) AS maara, laji FROM viehe, tarppi, kala, laji WHERE viehe.id=tarppi.viehe_id AND tarppi.id=kala.tarppi_id AND kala.laji_id=laji.id AND laji='{x}' GROUP BY viehe;")
+        cursor.execute(f"SELECT  laji, viehe, COUNT(laji) AS maara FROM viehe, tarppi, kala, laji WHERE viehe.id=tarppi.viehe_id AND tarppi.id=kala.tarppi_id AND kala.laji_id=laji.id AND laji='{x}' GROUP BY viehe;")
         viehella = cursor.fetchall()
         if len(viehella) > 0: 
+            for laji, viehe, maara in viehella:
+                k.append((f"{laji}", f"{viehe}", f"{maara} kpl"))
             viehella_data.append(viehella)
-    
-    viehella_data = [f"{laji} {viehe} {maara} kpl" for viehella in viehella_data for laji, maara, viehe in viehella]
-    
-    return {"data": viehella_data}
+    print(viehella_data)
+
+    return {"data": k}
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

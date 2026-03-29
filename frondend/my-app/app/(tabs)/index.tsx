@@ -17,6 +17,7 @@ export default function HomeScreen() {
   const [visible_viehella, setVisible_viehella] = useState(false); 
 
   const getData = async () => {
+
     fetch('http://10.0.2.2:5000/paino')
       .then(response => response.json())
       .then(json => {
@@ -57,7 +58,6 @@ export default function HomeScreen() {
   const startSlideshow = () => {
     setTimeout(() => {
       setVisible_paino(true)
-
       setVisible_viehella(false)
       setVisible_pituus(false)
       setVisible_maara(false)
@@ -65,7 +65,6 @@ export default function HomeScreen() {
 
     setTimeout(() => {
       setVisible_pituus(true)
-      
       setVisible_viehella(false)
       setVisible_paino(false)
       setVisible_maara(false)
@@ -73,7 +72,6 @@ export default function HomeScreen() {
 
     setTimeout(() => {
       setVisible_maara(true)
-
       setVisible_viehella(false)
       setVisible_paino(false)
       setVisible_pituus(false)
@@ -81,7 +79,6 @@ export default function HomeScreen() {
 
     setTimeout(() => {
       setVisible_viehella(true)
-
       setVisible_paino(false)
       setVisible_pituus(false)
       setVisible_maara(false)
@@ -98,19 +95,36 @@ export default function HomeScreen() {
 
   };
 
-
   useEffect(() => {
     getData();
     startSlideshow();
   }, []);
   
-  console.log(paino_mukaan[0]);
-
   const fishImages: {[key: string]: any} = {
     hauki: require('../../assets/images/hauki.jpg'),
-    // ahven: require('../../assets/images/ahven.jpg'),
     siika: require('../../assets/images/siika.jpg'),
-    // add all your fish here
+    harjus: require('../../assets/images/harjus.jpg'),
+    jokirapu: require('../../assets/images/jokirapu.jpg'),
+    kiiski: require('../../assets/images/kiiski.jpg'),
+    kirjolohi: require('../../assets/images/kirjolohi.jpg'),
+    kolmipiikki: require('../../assets/images/kolmipiikki.jpg'),
+    kuha: require('../../assets/images/kuha.jpg'),
+    kuore: require('../../assets/images/kuore.jpg'),
+    lahna: require('../../assets/images/lahna.jpg'),
+    lohi: require('../../assets/images/lohi.jpg'),
+    made: require('../../assets/images/made.jpg'),
+    muikku: require('../../assets/images/muikku.jpg'),
+    pasuri: require('../../assets/images/pasuri.jpg'),
+    rautu: require('../../assets/images/rautu.jpg'),
+    ruutana: require('../../assets/images/ruutana.jpg'),
+    salakka: require('../../assets/images/salakka.jpg'),
+    särki: require('../../assets/images/särki.jpg'),
+    säyne: require('../../assets/images/säyne.jpg'),
+    silakka: require('../../assets/images/silakka.jpg'),
+    sorva: require('../../assets/images/sorva.jpg'),
+    suutari: require('../../assets/images/suutari.jpg'),
+    taimen: require('../../assets/images/taimen.jpg'),
+    täplärapu: require('../../assets/images/täplärapu.jpg'),
   };
   
   return (
@@ -118,42 +132,74 @@ export default function HomeScreen() {
       <SafeAreaView style={styles.container} edges={['left', 'right']}>
         <ImageBackground source={image} resizeMode="cover" style={styles.image}>
           <View style={styles.main}>
-            <Text style={styles.text}>Kalastustieto mobile app</Text>
-            <View style={{marginTop: 50, backgroundColor: '#000000c0' }}>
-              {visible_paino ? <View><Text style={styles.Titletext}>Kalat painon mukaan: {"\n" + paino_mukaan.map((item: string) => item).join('\n')}</Text>
-                {paino_mukaan.length > 0 && fishImages[paino_mukaan[0][0] ] ? (
-                  <Image source={fishImages[paino_mukaan[0][0]]} style={styles.imageFish} />
-                ) : (
-                  <Text style={styles.text}>Kuva ei näy</Text>
-                )} 
-              
+            <Text style={styles.textApp}>Kalastustieto mobile app</Text>
+            <View style={{marginTop: 50, backgroundColor: '#000000c0', padding: 20, borderRadius: 0}}>
+              {visible_paino ? <View>
+                <Text style={styles.Titletext}>Kalat painon mukaan:</Text>
+                {paino_mukaan.map((item, index) => {
+                  const fishName = item[0].toLowerCase();
+                  return (
+                    <View key={index}>
+                      <Text style={styles.text}>{item}</Text>
+                      {fishImages[fishName] ? (
+                        <Image source={fishImages[fishName]} style={styles.imageFish} />
+                      ) : (
+                        <Text style={styles.text}>Kuva ei näy</Text>
+                      )}
+                    </View>
+                  );
+                })}
               </View>  : null}
               
-              {visible_pituus ? <View><Text style={styles.Titletext}>Kalat pituuden mukaan: {"\n" + pituus_mukaan.map((item: string) => item).join('\n')}</Text>
-                  {paino_mukaan.length > 0 && fishImages[paino_mukaan[0][0] ] ? (
-                    <Image source={fishImages[paino_mukaan[0][0]]} style={styles.imageFish} />
-                  ) : (
-                    <Text style={styles.text}>Kuva ei näy</Text>
-                  )}
-              
+              {visible_pituus ? <View>
+                <Text style={styles.Titletext}>Kalat pituuden mukaan:</Text>
+                {pituus_mukaan.map((item, index) => {
+                  const fishName = item[0].toLowerCase();
+                  return (
+                    <View key={index}>
+                      <Text style={styles.text}>{item}</Text>
+                      {fishImages[fishName] ? (
+                        <Image source={fishImages[fishName]} style={styles.imageFish} />
+                      ) : (
+                        <Text style={styles.text}>Kuva ei näy</Text>
+                      )}
+                    </View>
+                  );
+                })}
               </View>  : null}
               
-              {visible_maara ? <View><Text style={styles.Titletext}>Kalalajien saanti määrät: {"\n" + maara_mukaan.map((item: string) => item).join('\n')}</Text>
-                          {maara_mukaan.length > 0 && fishImages[maara_mukaan[0][0]] ? (
-                <Image source={fishImages[maara_mukaan[0][0]]} style={styles.imageFish} />
-              ) : (
-                <Text style={styles.text}>Kuva ei näy</Text>
-              )} 
-              
+              {visible_maara ? <View>
+                <Text style={styles.Titletext}>Kalalajien saanti määrät:</Text>
+                {maara_mukaan.map((item, index) => {
+                  const fishName = item[0].toLowerCase();
+                  return (
+                    <View key={index}>
+                      <Text style={styles.text}>{item}</Text>
+                      {fishImages[fishName] ? (
+                        <Image source={fishImages[fishName]} style={styles.imageFish} />
+                      ) : (
+                        <Text style={styles.text}>Kuva ei näy</Text>
+                      )}
+                    </View>
+                  );
+                })}
               </View>  : null}
               
-              {visible_viehella ? <View><Text style={styles.Titletext}>Kalalajien saanti määrät eri vieheillä: {"\n" + viehella_mukaan.map((item: string) => item).join('\n')}</Text>
-                          {viehella_mukaan.length > 0 && fishImages[viehella_mukaan[0][0]] ? (
-                <Image source={fishImages[viehella_mukaan[0][0]]} style={styles.imageFish} />
-              ) : (
-                <Text style={styles.text}>Kuva ei näy</Text>
-              )} 
-              
+              {visible_viehella ? <View>
+                <Text style={styles.Titletext}>Kalalajien saanti määrät eri vieheillä:</Text>
+                {viehella_mukaan.map((item, index) => {
+                  const fishName = item[0].toLowerCase();
+                  return (
+                    <View key={index}>
+                      <Text style={styles.text}>{item}</Text>
+                      {fishImages[fishName] ? (
+                        <Image source={fishImages[fishName]} style={styles.imageFish} />
+                      ) : (
+                        <Text style={styles.text}>Kuva ei näy</Text>
+                      )}
+                    </View>
+                  );
+                })}
               </View>  : null}
             </View>
           </View>
@@ -187,7 +233,6 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingBottom: 10,
     color: 'white', 
-    backgroundColor: '#000000c0'
   },
   Titletext: {
     fontSize: 24,
@@ -195,6 +240,14 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingBottom: 20,
     color: 'white'
+  },
+  textApp: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    paddingLeft: 20,
+    paddingBottom: 10,
+    color: 'white',
+    backgroundColor: '#000000c0',
   },
   Thetext: {
     fontSize: 24,

@@ -131,8 +131,8 @@ export default function HomeScreen() {
     <SafeAreaProvider>
       <SafeAreaView style={styles.container} edges={['left', 'right']}>
         <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+          
           <View style={styles.main}>
-            <Text style={styles.textApp}>Kalastustieto mobile app</Text>
             <View style={{marginTop: 50, backgroundColor: '#000000c0', padding: 20, borderRadius: 0}}>
               {visible_paino ? <View>
                 <Text style={styles.Titletext}>Kalat painon mukaan:</Text>
@@ -240,14 +240,6 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingBottom: 20,
     color: 'white'
-  },
-  textApp: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    paddingLeft: 20,
-    paddingBottom: 10,
-    color: 'white',
-    backgroundColor: '#000000c0',
   },
   Thetext: {
     fontSize: 24,
